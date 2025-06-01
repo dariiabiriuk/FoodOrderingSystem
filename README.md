@@ -3,8 +3,93 @@
 
 ## Класи та їх методи
 ### Клас `MenuItem`
+**Опис**
 
-Представляє окрему страву в меню.
+Клас `MenuItem` є фундаментальним будівельним блоком у системі управління рестораном. Розробленим для представлення окремих страв або напоїв, що пропонуються в меню. Його основне призначення — інкапсулювати всі відповідні деталі про страву, забезпечуючи цілісність даних за допомогою механізмів валідації.
+
+**Можливості**
+1.  *Зберігання деталізованої інформації про страву.*
+
+Клас MenuItem дозволяє зберігати повний набір атрибутів, що описують одну страву. Це включає:
+- назва страви: для ідентифікації;
+- опис: список інгредієнтів та особливостей приготування;
+- ціна: вартість страви;
+- калорійність: енергетична цінність страви;
+- вага: стандартна вага порції;
+- список алергенів: важлива інформація для клієнтів з алергіями;
+- статус доступності: чи можна замовити страву зараз;
+- час приготування: орієнтовний час очікування для клієнта.
+
+Ці атрибути дозволяють системі мати повне уявлення про кожен пункт меню.
+
+2.   *Автоматична валідація вхідних даних.*
+
+Однією з найважливіших можливостей класу є вбудована валідація даних під час ініціалізації об'єкта. Це забезпечує, що в систему потрапляють лише коректні та осмислені дані, запобігаючи логічним помилкам та помилкам типу.
+
+Перевірка типів:
+
+- гарантує, що `name`, `description` є рядками `(str)`;
+- гарантує, що `price`, `weight_gram` є числами з плаваючою комою `(float)`;
+- гарантує, що `calories`, `preparation_time_minutes` є цілими числами `(int)`;
+- гарантує, що `allergens` є списком `(list)`;
+- гарантує, що `is_available` є булевим значенням `(bool)`.
+
+У разі невідповідності типу викликає TypeError.
+
+Перевірка значень:
+
+- непорожність: перевіряє, що `name`, `description` не є порожніми рядками;
+- позитивні значення: перевіряє, що `price`, `calories`, `weight_gram`, `preparation_time_minutes` є додатними числами (більше 0);
+- непорожній список алергенів: вимагає, щоб список `allergens` не був порожнім, якщо він наданий;
+- доступність: вимагає, щоб `is_available` було `True` при ініціалізації, якщо страва доступна.
+
+У разі некоректних значень викликає ValueError.
+
+3. *Безпечний доступ до атрибутів.*
+
+Клас надає набір публічних методів-гетерів `(get_name()`, `get_description()`, `get_price()`, `get_calories()`, `get_weight_gram()`, `get_allergens()`, `get_is_available()`, `get_preparation_time_minutes()`), які дозволяють зовнішньому коду безпечно отримувати значення приватних атрибутів (`_name`, `_price` тощо).
+
+4. *Зручне представлення інформації.*
+
+Метод `__str__` дозволяє отримати зрозуміле та відформатоване рядкове представлення об'єкта `MenuItem`.
+
+**Демонстрація можливостей класу `MenuItem`**
+```python
+#Зберігання деталізованої інформації про страву.
+    try:
+        dish1 = MenuItem("Greek Salad", "A classic salad made with fresh vegetables and cheese.\n"
+                                        "Ingredients: tomatoes, cucumber, red onion, green bell pepper, kalamata"
+                                        "olives, feta cheese, olive oil, oregano, salt",
+                         15.00, 230, 300.00, ["Milk", "Gluten"], True, 10)
+        print("Position №1:", dish1)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish1:", {e})
+    print("\n")
+
+#Position №1: 
+#Dish Name: Greek Salad
+#Description: A classic salad made with fresh vegetables and cheese.
+#Ingredients: tomatoes, cucumber, red onion, green bell pepper, kalamataolives, feta cheese, olive oil, oregano, salt
+#Price: $15.00
+#Calories: 230 kcal
+#Weight: 300.00 grams
+#Allergens: Milk, Gluten
+#Availability: Available
+#Preparation time: 10 minutes
+
+#Автоматична валідація вхідних даних.
+    try:
+        print("Position №4: Creating an incorrect value with a negative price.")
+        dish4 = MenuItem("Salmon Nigiri", "Fresh salmon on seasoned rice.",
+                         -5.00, 120, 80.00, ["Gluten"], True, 5) #Некоректна ціна
+        print("Position №4:", dish4)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish4:", {e})
+    print("\n")
+
+#Position №4: Creating an incorrect value with a negative price.
+#Error creating dish4: {ValueError('The price of the dish needs to be a positive value.')}
+```
 
 Методи:
 - ```__init__``` ініціалізує об'єкт страви, перевіряючи коректність вхідних значень для назви, опису, ціни, калорій, ваги в грамах, алергенів, наявності та часу приготування в хвилинах.
