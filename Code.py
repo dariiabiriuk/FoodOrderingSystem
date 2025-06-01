@@ -142,7 +142,8 @@ class MenuItem:
         :rtype: str
         """
         availability_status = "Available" if self._is_available else "Not Available"
-        return (f"Dish Name: {self._name}\n"
+        return (f"\n"
+                f"Dish Name: {self._name}\n"
                 f"Description: {self._description}\n"
                 f"Price: ${self._price:.2f}\n"
                 f"Calories: {self._calories} kcal\n"
@@ -242,7 +243,7 @@ class Menu:
         If the menu is empty, it indicates that no items are available.
         Each item's details are displayed using its __str__ method.
         """
-        print(f"{self.get_name()} Menu")
+        print(f"{self.get_name()}")
         if not self._items:
             print("No items in this menu yet.")
         for item in self._items:
@@ -376,7 +377,7 @@ class Restaurant:
         if not isinstance(menu, Menu):
             raise TypeError("Menu must be an instance of the Menu class.")
         self._menu = menu
-        print(f"Menu '{menu.get_name()}' has been set for {self.get_name()}.")
+        print(f"Menu '{menu.get_name()}' has been set for restaurant '{self.get_name()}'.")
 
     def __str__(self):
         """
@@ -389,7 +390,8 @@ class Restaurant:
         :rtype: str
         """
         menu_status = self._menu.get_name() if self._menu else "No menu set"
-        return (f"Restaurant Name: {self._name}\n"
+        return (f"\n"
+                f"Restaurant Name: {self._name}\n"
                 f"Address: {self._address}\n"
                 f"Phone: {self._phone}\n"
                 f"Cuisine: {self._cuisine_type}\n"
@@ -401,7 +403,7 @@ class Client:
     """
     Represents a client of the restaurant, storing their personal and contact information.
     """
-    def __init__(self, name: str, surname: str,  email: str, phone: str):
+    def __init__(self, name: str, surname: str,  email: str, phone: int):
         """
         Initializes a new Client object.
 
@@ -428,7 +430,7 @@ class Client:
             raise TypeError("Client email must be a string.")
         if not email or "@" not in email:
             raise ValueError("Invalid client email.")
-        if not isinstance(phone, str):
+        if not isinstance(phone, int):
             raise TypeError("Client phone must be a string.")
         if not phone:
             raise ValueError("Client phone cannot be empty.")
@@ -461,7 +463,7 @@ class Client:
         :rtype: str
         """
         return self._email
-    def get_phone(self) -> str:
+    def get_phone(self) -> int:
         """
         Retrieves the phone number of the client.
 
@@ -481,7 +483,8 @@ class Client:
         :rtype: str
         """
         full_name = f"{self._name} {self._surname}".strip()
-        return (f"Client: {full_name}\n"
+        return (f"\n"
+                f"Client: {full_name}\n"
                 f"Email: {self._email}\n"
                 f"Phone: {self._phone}")
 
@@ -730,7 +733,181 @@ class Notification:
         :rtype: str
         """
         self._sent_time = datetime.now()
-        return (f"Sending {self.get_notification_type()} Notification\n"
+        return (f"Sending {self.get_notification_type()} notification\n"
                 f"To: {self.get_recipient_email()}\n"
                 f"Message: {self.get_message()}\n"
                 f"Sent at: {self.get_sent_time().strftime('%Y-%m-%d %H:%M:%S')}\n")
+
+if __name__ == "__main__":
+    dish1 = None
+    dish2 = None
+    dish3 = None
+    dish4 = None
+    dish5 = None
+    menu1 = None
+    menu2 = None
+    rest1 = None
+    client1 = None
+    client2 = None
+    order1 = None
+    order2 = None
+    notif1 = None
+    try:
+        dish1 = MenuItem("Greek Salad", "A classic salad made with fresh vegetables and cheese.\n"
+                                        "Ingredients: tomatoes, cucumber, red onion, green bell pepper, kalamata"
+                                        "olives, feta cheese, olive oil, oregano, salt",
+                         15.00, 230, 300.00, ["Milk", "Gluten"], True, 10)
+        print("Position №1:", dish1)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish1:", {e})
+    print("\n")
+
+    try:
+        dish2 = MenuItem("Tuna Salad", "Ingredients: canned tuna, lettuce, cherry tomatoes, cucumber, "
+                                       "red onion, sweet corn, olive oil, lemon juice, salt and pepper",
+                         19.00, 180, 350.00, ["Lemon", "Fish"], True, 10)
+        print("Position №2:", dish2)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish2:", {e})
+    print("\n")
+
+    try:
+        dish3 = MenuItem("Carbonara Pasta", "Classic Italian pasta with egg, hard cheese, cured pork, and black pepper.",
+                         25.00, 550, 250.00, ["Gluten", "Eggs", "Dairy", "Pork"], True, 15)
+        print("Position №3:", dish3)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish3:", {e})
+    print("\n")
+
+    try:
+        print("Position №4: Creating an incorrect value with a negative price.")
+        dish4 = MenuItem("Salmon Nigiri", "Fresh salmon on seasoned rice.",
+                         -5.00, 120, 80.00, ["Gluten"], True, 5)
+        print("Position №4:", dish4)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish4:", {e})
+    print("\n")
+
+    try:
+        print("Position №5: Creating an incorrect value with an incorrect name type.")
+        dish5 = MenuItem(000, "Description",
+                         10.00, 190, 150.00, ["Gluten"], True, 7)
+        print("Position №5:", dish5)
+    except (TypeError, ValueError) as e:
+        print("Error creating dish5:", {e})
+    print("\n")
+
+    try:
+        menu1 = Menu("Mediterranean Menu")
+        menu1.get_name()
+        menu1.add_item(dish1)
+        menu1.add_item(dish2)
+        menu1.add_item(dish3)
+        menu1.display_menu()
+        menu1.remove_item("Carbonara Pasta")
+        print("\n")
+        menu1.get_name()
+        menu1.display_menu()
+    except (TypeError, ValueError) as e:
+        print("Error creating menu1:", {e})
+    print("\n")
+
+    try:
+        print("Creating an incorrect value with a empty name.")
+        menu2 = Menu("")
+        menu1.get_name()
+    except (TypeError, ValueError) as e:
+        print("Error creating menu2:", {e})
+    print("\n")
+
+    try:
+        rest1 = Restaurant("Olivia", "Kyiv, Khreshchatyk, 15", 380964850106,
+                           {"Monday-Friday": "10:00-22:00", "Saturday-Sunday": "11:00-23:00"},
+                           "Greek", 5.0)
+        rest1.set_menu(menu1)
+        print("Restaurant Num1:", rest1)
+    except (TypeError, ValueError) as e:
+        print("Error creating rest1:", {e})
+    print("\n")
+
+    try:
+        rest2 = Restaurant("Bad Place", "Somewhere", 380954850106,
+                           {"Daily": "10-20"},"Fast Food", 6.0)
+        print("Restaurant Num2:", rest2)
+    except (TypeError, ValueError) as e:
+        print("Error creating rest2:", {e})
+    print("\n")
+
+    try:
+        client1 = Client("Rodrigo", "Smith",
+                         "rodrigo_smith@gmail.com", 380944850106)
+        print("Client Num1:", client1)
+    except (TypeError, ValueError) as e:
+        print("Error creating client1:", {e})
+    print("\n")
+
+    try:
+        client2 = Client("Ann", "Smith",
+                         "ann_smith.gmail.com", 380944850106)
+        print("Client Num2:", client2)
+    except (TypeError, ValueError) as e:
+        print("Error creating client2:", {e})
+    print("\n")
+
+    try:
+        order1 = Order(client1, rest1)
+        print(f"Correct order #{order1.get_order_number()} created.")
+        if dish1:
+            order1.add_item(dish1, 2)
+        if dish2:
+            order1.add_item(dish2, 3)
+        if dish3:
+            order1.add_item(dish3, 1)
+        print(order1.display_order_details())
+        print(f"Price: ${order1.get_total_price():.2f}")
+        order1.update_status("Confirmed")
+        print(f"New status of order #{order1.get_order_number()}: {order1.get_status()}")
+        if dish1:
+            order1.remove_item(dish1, )
+            print(order1.display_order_details())
+            order1.remove_item(dish1)
+            print(order1.display_order_details())
+    except (TypeError, ValueError) as e:
+        print("Error creating order1:", {e})
+    print("\n")
+
+    try:
+        order2 = Order(client2, rest1)
+        print(f"Correct order #{order2.get_order_number()} created.")
+        if dish1:
+            order2.add_item(dish1, 2)
+        if dish2:
+            order2.add_item(dish2, 3)
+        if dish3:
+            order2.add_item(dish3, 1)
+        print(order2.display_order_details())
+        print(f"Price: ${order2.get_total_price():.2f}")
+        order2.update_status("Confirmed")
+        print(f"New status of order #{order2.get_order_number()}: {order2.get_status()}")
+        if dish1:
+            order2.remove_item(dish1, )
+            print(order2.display_order_details())
+            order2.remove_item(dish1)
+            print(order2.display_order_details())
+    except (TypeError, ValueError) as e:
+        print("Error creating order2:", {e})
+    print("\n")
+
+    try:
+        notif1 = Notification("Your order has been confirmed!", "rodrigo_smith@gmail.com")
+        print(f"Type message: {notif1.get_notification_type()}")
+        print(notif1.send())
+    except (TypeError, ValueError) as e:
+        print("Error creating notif1:", {e})
+
+    try:
+        notif2 = Notification("Your order has been confirmed!", "rodrigo_smith.gmail.com")
+        print(f"Type message: {notif2.get_notification_type()}")
+        print(notif2.send())
+    except (TypeError, ValueError) as e:
+        print("Error creating notif2:", {e})
