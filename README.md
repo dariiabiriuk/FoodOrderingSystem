@@ -462,20 +462,130 @@ Menu надає методи для динамічного керування с
 Клас Order дозволяє:
 
 1. *Створювати унікальні замовлення: автоматично присвоює унікальний номер кожному новому замовленню.*
-2. *Прив'язувати замовлення до клієнта та ресторану: Встановлює зв'язок між замовленням, клієнтом, який його розмістив, і рестораном, що його обслуговує.
-Керувати позиціями замовлення: Дозволяє додавати та видаляти страви (MenuItem) із замовлення, а також оновлювати їхню кількість.
-Відстежувати час замовлення: Зберігає точний час створення замовлення.
-Оновлювати статус замовлення: Дозволяє змінювати статус замовлення (наприклад, "В очікуванні", "Підтверджено", "Доставлено"), забезпечуючи відстеження його життєвого циклу.
-Розраховувати загальну вартість: Автоматично обчислює сумарну вартість усіх позицій у замовленні.
-Відображати деталі замовлення: Генерує повне, відформатоване зведення замовлення для зручного перегляду.
+2. *Прив'язувати замовлення до клієнта та ресторану: встановлює зв'язок між замовленням, клієнтом, який його розмістив, і рестораном, що його обслуговує.*
+3. *Керувати позиціями замовлення: дозволяє додавати та видаляти страви `(MenuItem)` із замовлення, а також оновлювати їхню кількість.*
+4. *Відстежувати час замовлення: зберігає точний час створення замовлення.*
+5. *Оновлювати статус замовлення: дозволяє змінювати статус замовлення ("В очікуванні", "Підтверджено", "Доставлено").*
+6. *Розраховувати загальну вартість: автоматично обчислює сумарну вартість усіх позицій у замовленні.*
+7. *Відображати деталі замовлення: генерує повне, відформатоване зведення замовлення для зручного перегляду.*
 
 *Демонстрація можливостей класу `Order`*
+
+```python
+    try:
+        order1 = Order(client1, rest1)
+        print(f"Correct order #{order1.get_order_number()} created.")
+        if dish1:
+            order1.add_item(dish1, 2)
+        if dish2:
+            order1.add_item(dish2, 3)
+        if dish3:
+            order1.add_item(dish3, 1)
+        print(order1.display_order_details())
+        print(f"Price: ${order1.get_total_price():.2f}")
+        order1.update_status("Confirmed")
+        print(f"New status of order #{order1.get_order_number()}: {order1.get_status()}")
+        if dish1:
+            order1.remove_item(dish1, )
+            print(order1.display_order_details())
+            order1.remove_item(dish1)
+            print(order1.display_order_details())
+    except (TypeError, ValueError) as e:
+        print("Error creating order1:", {e})
+    print("\n")
+
+#Correct order #0 created.
+#Added 2 x Greek Salad to order 0.
+#Added 3 x Tuna Salad to order 0.
+#Added 1 x Carbonara Pasta to order 0.
+#Order Details (Order #0)
+#Client: Rodrigo
+#Restaurant: Olivia
+#Order Time: 2025-06-02 23:11:09
+#Status: Pending
+#Items:
+#Greek Salad x 2 ($15.00 each)
+#Tuna Salad x 3 ($19.00 each)
+#Carbonara Pasta x 1 ($25.00 each)
+#Total: $112.00
+#Price: $112.00
+#Order 0 status updated to: Confirmed
+#New status of order #0: Confirmed
+#Removed Greek Salad from order 0.
+#Order Details (Order #0)
+#Client: Rodrigo
+#Restaurant: Olivia
+#Order Time: 2025-06-02 23:11:09
+#Status: Confirmed
+#Items:
+#Tuna Salad x 3 ($19.00 each)
+#Carbonara Pasta x 1 ($25.00 each)
+#Total: $82.00
+#Greek Salad not found in order 0.
+#Order Details (Order #0)
+#Client: Rodrigo
+#Restaurant: Olivia
+#Order Time: 2025-06-02 23:11:09
+#Status: Confirmed
+#Items:
+#Tuna Salad x 3 ($19.00 each)
+#Carbonara Pasta x 1 ($25.00 each)
+#Total: $82.00
+
+    try:
+        order2 = Order(client2, rest1)
+        print(f"Correct order #{order2.get_order_number()} created.")
+        if dish1:
+            order2.add_item(dish1, 2)
+        if dish2:
+            order2.add_item(dish2, 3)
+        if dish3:
+            order2.add_item(dish3, 1)
+        print(order2.display_order_details())
+        print(f"Price: ${order2.get_total_price():.2f}")
+        order2.update_status("Confirmed")
+        print(f"New status of order #{order2.get_order_number()}: {order2.get_status()}")
+        if dish1:
+            order2.remove_item(dish1, )
+            print(order2.display_order_details())
+            order2.remove_item(dish1)
+            print(order2.display_order_details())
+    except (TypeError, ValueError) as e:
+        print("Error creating order2:", {e})
+    print("\n")
+
+#Error creating order2: {TypeError('Order must be associated with a valid Client.')}
+```
 
 **Структура класу**
 
 1. *Атрибути*
 
-2. *Методи*
+|  Назва атрибуту | Визначення атрибуту |
+| ----------- | ----------- |
+|  `next_order_number: int`  | Атрибут класу, який відстежує наступний доступний унікальний номер замовлення. Збільшується при кожному створенні нового замовлення. |
+|  `_order_number: int`  | Приватний атрибут екземпляра, унікальний ідентифікатор для кожного замовлення. |
+|  `_client: Client`  | Приватний атрибут екземпляра, посилання на об'єкт `Client`, який зробив це замовлення. |
+|  `_restaurant: Restaurant`  | Приватний атрибут екземпляра, посилання на об'єкт `Restaurant`, який обробляє це замовлення. |
+|  `_items: dict[MenuItem, int]`  | Приватний атрибут екземпляра, словник, що зберігає страви (об'єкти `MenuItem`) та їхню кількість у замовленні. |
+|  `_order_time: datetime`  | Приватний атрибут екземпляра, об'єкт datetime, що фіксує точний час створення замовлення. |
+|  `_status: str`  | Приватний атрибут екземпляра, поточний статус замовлення (наприклад, "Pending", "Confirmed", "Delivered"). |
+
+3. *Методи*
+
+| Назва методу | Визначення методу |
+| ----------- | ----------- |
+| `__init__` |  Приймає значення для всіх восьми атрибутів, перелічених вище, як аргументи. Виконує перевірку типів для кожного параметра, щоб переконатися, що вони відповідають очікуваним типам даних. Виконує перевірку значень для забезпечення логічної коректності. Якщо всі перевірки пройдені успішно, вхідні значення присвоюються відповідним приватним атрибутам. |
+| `get_order_number(self) -> int` |  Повертає унікальний номер замовлення. |
+| `get_client(self) -> Client` | Повертає об'єкт `Client`, пов'язаний із замовленням. |
+| `get_restaurant(self) -> Restaurant` | Повертає об'єкт `Restaurant`, пов'язаний із замовленням. |
+| `get_order_time(self) -> datetime` | Повертає дату та час створення замовлення. |
+| `get_status(self) -> str` | Повертає поточний статус замовлення. |
+| `add_item(self, menu_item: MenuItem, quantity: int)` |  Додає вказану кількість `MenuItem` до замовлення або оновлює її, якщо елемент вже присутній. |
+| `remove_item(self, menu_item: MenuItem)` | Повністю видаляє `MenuItem` із замовлення. |
+| `get_total_price(self) -> float` | Обчислює та повертає загальну вартість усіх позицій у замовленні. |
+| `update_status(self, new_status: str)` | Оновлює статус замовлення. |
+| `display_order_details(self) -> str` | Повертає детальний, відформатований підсумок замовлення у вигляді рядка. |
 
 ### Клас `Notification`
 
