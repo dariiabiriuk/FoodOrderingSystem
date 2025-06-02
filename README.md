@@ -150,24 +150,119 @@ print(dish3.__str__())
 **Можливості**
 
 1. Створення та іменування меню.
+
 Клас Menu дозволяє створювати іменовані екземпляри меню. Кожен об'єкт ```Menu``` ініціалізується з унікальною назвою (наприклад, "Сніданки", "Вечеря"), яка служить для ідентифікації та організації.
 
 Валідація назви меню:
+
 - Перевірка типу: гарантує, що назва меню є рядком (str). У випадку невідповідності викликає ```TypeError```.
 - Перевірка значення: гарантує, що назва меню не є порожнім рядком. У випадку порожнього рядка викликає ```ValueError```.
 
 2. Додавання та видалення позицій меню.
+
 Menu надає методи для динамічного керування списком страв:
-- Додавання позицій: метод ```add_item()``` дозволяє додавати об'єкти MenuItem до меню. Він забезпечує, що додаються лише дійсні об'єкти ```MenuItem```, підвищуючи цілісність даних.
+
+- Додавання позицій: метод ```add_item()``` дозволяє додавати об'єкти ```MenuItem``` до меню. Він забезпечує, що додаються лише дійсні об'єкти ```MenuItem```, підвищуючи цілісність даних.
 - Видалення позицій: метод ```remove_item()``` дозволяє видаляти позиції меню за їхньою назвою. Якщо існує кілька позицій з однаковою назвою, будуть видалені всі відповідні.
 
 3. Пошук позицій меню.
+
 Метод ```get_item()``` дозволяє знаходити певну позицію ```MenuItem``` у меню за її назвою. Він повертає перший знайдений відповідний об'єкт ```MenuItem``` або ```None```, якщо позицію не знайдено.
 
 4.  Відображення меню.
+
 Метод ```display_menu()``` друкує відформатоване представлення всього меню в консолі. Він спочатку відображає назву меню, а потім перераховує всі позиції, які воно містить, використовуючи метод ```__str__``` кожного ```MenuItem```. Якщо меню порожнє, відображається відповідне повідомлення.
 
 *Демонстрація можливостей класу `Menu`*
+
+```Python
+# 1. Створення нового меню
+print("Creating a new Menu:")
+try:
+    lunch_menu = Menu("Lunch Menu")
+    print(f"Menu '{lunch_menu.get_name()}' successfully created.")
+except (TypeError, ValueError) as e:
+    print(f"Error creating menu: {e}")
+
+# Creating a New Menu:
+# Menu 'Lunch Menu' successfully created.
+
+# 2. Додавання позицій до меню
+print("Adding Items to the Menu:")
+try:
+    pizza = MenuItem(
+        "Margherita Pizza",
+        "Classic pizza with tomato sauce, mozzarella, and basil.",
+        18.50, 850, 400.0, ["Milk", "Gluten"], True, 20)
+    salad = MenuItem(
+        "Caesar Salad",
+        "Fresh salad with grilled chicken, lettuce, croutons, and Caesar dressing.",
+        12.00, 350, 250.0, ["Milk", "Gluten", "Eggs"], True, 15)
+    soup = MenuItem(
+        "Pumpkin Cream Soup",
+        "Delicate pumpkin cream soup with spices.",
+        9.00, 200, 300.0, ["Milk"], True, 10)
+
+    lunch_menu.add_item(pizza)
+    lunch_menu.add_item(salad)
+    lunch_menu.add_item(soup)
+    print("Items 'Margherita Pizza', 'Caesar Salad', 'Pumpkin Cream Soup' added.")
+
+# Adding Items to the Menu:
+# Items 'Margherita Pizza', 'Caesar Salad', 'Pumpkin Cream Soup' added.
+
+# 3. Відображення поточного меню
+print("Displaying the Current Menu:")
+lunch_menu.display_menu()
+
+# Displaying the Current Menu:
+# Lunch Menu Menu
+
+# 4. Отримання позиції за назвою
+
+print("Getting an Item by Name:")
+found_item = lunch_menu.get_item("Caesar Salad")
+if get_item:
+    print(f"Found: {found_item.get_name()}")
+    print(f"Price: ${found_item.get_price():.2f}")
+else:
+    print("Item 'Caesar Salad' not found.")
+
+not_found_item = lunch_menu.get_item("Sushi Set")
+if not get_item:
+    print(f"Found: {not_found_item.get_name()}")
+else:
+    print("Item 'Sushi Set' not found, as expected.")
+
+# Getting an Item by Name:
+# Found: Caesar Salad
+# Price: 12.00
+# Item 'Sushi Set' not found, as expected.
+
+# 5. Видалення позиції з меню
+
+print("Removing an Item from the Menu:")
+lunch_menu.remove_item("Pumpkin Cream Soup")
+print("Item 'Pumpkin Cream Soup' removed.")
+print("Menu after removal:")
+lunch_menu.display_menu()
+
+lunch_menu.remove_item("Неіснуюча страва")
+print("\n Attempting to remove a non-existent dish. Menu remains unchanged:")
+lunch_menu.display_menu()
+
+# Removing an Item from the Menu:
+# Item 'Pumpkin Cream Soup' removed.
+# Menu after removal:
+# # --- Lunch Menu ---
+# Margherita Pizza - $18.50
+# Caesar Salad - $12.00
+# Attempting to remove a non-existent dish. Menu remains unchanged:
+# --- Lunch Menu ---
+# Margherita Pizza - $18.50
+# Caesar Salad - $12.00
+
+```
 
 **Структура класу**
 
