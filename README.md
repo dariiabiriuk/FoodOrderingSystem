@@ -145,15 +145,89 @@ print(dish3.__str__())
 
 **Опис**
 
+Клас ```Menu``` слугує центральним компонентом для організації та відображення страв у системі управління рестораном. Він призначений для зберігання колекції об'єктів MenuItem, представляючи собою конкретне меню, наприклад, "Сніданки" або "Обіднє меню". Клас Menu забезпечує повний набір функцій для ефективного управління, пошуку та відображення доступних страв.
+
 **Можливості**
+1. Створення та іменування меню.
+
+Клас Menu дозволяє створювати іменовані екземпляри меню. Кожен об'єкт Menu ініціалізується з унікальною назвою (наприклад, "Сніданки", "Вечеря"), яка служить для ідентифікації та організації.
+
+Валідація назви меню:
+
+- Перевірка типу: гарантує, що назва меню є рядком (str). У випадку невідповідності викликає ```TypeError```.
+- Перевірка значення: гарантує, що назва меню не є порожнім рядком. У випадку порожнього рядка викликає ```ValueError```.
+
+
+2. Додавання та видалення позицій меню.
+
+```Menu``` надає методи для динамічного керування списком страв:
+
+- Додавання позицій: метод ```add_item()``` дозволяє додавати об'єкти MenuItem до меню. Він забезпечує, що додаються лише дійсні об'єкти ```MenuItem```, підвищуючи цілісність даних.
+- Видалення позицій: метод ```remove_item()``` дозволяє видаляти позиції меню за їхньою назвою. Якщо існує кілька позицій з однаковою назвою, будуть видалені всі відповідні.
+
+3. Пошук позицій меню.
+
+Метод ```get_item()``` дозволяє знаходити певну позицію MenuItem у меню за її назвою. Він повертає перший знайдений відповідний об'єкт MenuItem або None, якщо позицію не знайдено.
+
+4. Відображення меню.
+
+Метод ```display_menu()``` друкує відформатоване представлення всього меню в консолі. Він спочатку відображає назву меню, а потім перераховує всі позиції, які воно містить, використовуючи метод ```__str__``` кожного MenuItem. Якщо меню порожнє, відображається відповідне повідомлення.
 
 *Демонстрація можливостей класу `Menu`*
+
+```Python
+# Створення нового меню:
+
+try:
+    lunch_menu = Menu("Lunch menu")
+    print(f"The '{lunch_menu.get_name()}'  menu has been successfully created.")
+except (TypeError, ValueError) as e:
+    print(f"Error creating menu: {e}")
+
+#The 'Lunch Menu' menu has been successfully created.
+
+# Додавання позицій до меню:
+
+try:
+    pizza = MenuItem("Margherita Pizza", "Classic pizza with tomato sauce, mozzarella, and basil.",
+        18.50, 850, 400.0, ["Milk", "Gluten"], True, 20)
+salad = MenuItem("Caesar Salad", "Fresh salad with grilled chicken, lettuce, croutons, and Caesar dressing.",
+        12.00, 350, 250.0, ["Milk", "Gluten", "Eggs"], True, 15)
+soup = MenuItem("Pumpkin Cream Soup", "Tender pumpkin cream soup with spices.",
+        9.00, 200, 300.0, ["Milk"], True, 10)
+
+lunch_menu.add_item(pizza)
+lunch_menu.add_item(salad)
+lunch_menu.add_item(soup)
+print("Items 'Margherita Pizza', 'Caesar Salad', 'Pumpkin Cream Soup' added.")
+
+# Items 'Margherita Pizza', 'Caesar Salad', 'Pumpkin Cream Soup' added.
+
+# Відображення поточного меню:
+
+lunch_menu.display_menu()
+
+# Lunch menu Menu
+
+# Видалення позиції з меню:
+
+lunch_menu.remove_item("Pumpkin Cream Soup")
+print("The item 'Pumpkin Cream Soup' has been removed.")
+print("Menu after deletion:")
+lunch_menu.display_menu()
+
+#The item 'Pumpkin Cream Soup' has been removed.
+```
 
 **Структура класу**
 
 1. *Атрибути*
 
-2. *Методи*
+|Назва атрибуту| Визначення атрибуту|
+| ----------- | ----------- |
+| name: str | Назва меню|
+
+3. *Методи*
 
 | Назва методу | Визначення методу |
 | ----------- | ----------- |
